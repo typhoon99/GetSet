@@ -5,8 +5,8 @@ from django.utils import timezone
 
 class UserProfile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
-    firstname=models.CharField(max_length=50)
-    lastname=models.CharField(max_length=50)
+    firstName=models.CharField(max_length=50)
+    lastName=models.CharField(max_length=50)
     year=models.CharField(max_length=10)
     division=models.CharField(max_length=1)
     rollno=models.IntegerField()
@@ -17,29 +17,29 @@ class UserProfile(models.Model):
     cgpa=models.FloatField()
     bio=models.TextField()
     image=models.ImageField(upload_to='images/')
-    groupid=models.IntegerField()
+    groupId=models.IntegerField(default=0)
     created_on=models.DateTimeField(default=timezone.now)
     
 
     def __str__(self):
-        return str(self.firstname + " " +self.lastname)
+        return str(self.firstName + " " +self.lastName)
 
 class Students(models.Model):
     rno=models.IntegerField()
-    firstname=models.CharField(max_length=50)
-    lastname=models.CharField(max_length=50)
-    mobileno=models.IntegerField(primary_key=True)
+    firstName=models.CharField(max_length=50)
+    lastName=models.CharField(max_length=50)
+    mobileNo=models.IntegerField(primary_key=True)
 
     def __str__(self):
-        return str(self.firstname + " " +self.lastname)
+        return str(str(self.rno)+"   "+self.firstName + " " +self.lastName)
 
 class Guide(models.Model):
-    firstname=models.CharField(max_length=50)
-    lastname=models.CharField(max_length=50)
-    mobileno=models.IntegerField(primary_key=True)
+    firstName=models.CharField(max_length=50)
+    lastName=models.CharField(max_length=50)
+    mobileNo=models.IntegerField(primary_key=True)
 
     def __str__(self):
-        return str(self.firstname + " " +self.lastname)
+        return str(self.firstName + " " +self.lastName)
 
 class Topic(models.Model):
     topicName=models.CharField(max_length=30)
@@ -53,8 +53,8 @@ class Topic(models.Model):
         return self.topicName
 
 
-class Group(models.Model):
-    groupid=models.IntegerField(primary_key=True)
+class ProjectGroup(models.Model):
+    groupId=models.IntegerField(default=0,primary_key=True)
     user1=models.ForeignKey(UserProfile,on_delete=models.CASCADE, related_name = "member1")
     user2=models.ForeignKey(UserProfile,on_delete=models.CASCADE, related_name = "member2")
     user3=models.ForeignKey(UserProfile,on_delete=models.CASCADE, related_name = "member3")
@@ -64,24 +64,26 @@ class Group(models.Model):
     created_on=models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.groupid
+        return self.groupId
     
 class Report(models.Model):
     report=models.FileField(upload_to ='reports/')
     description=models.TextField(blank=True)
-    groupid=models.ForeignKey(Group,on_delete=models.CASCADE)
+    groupId=models.ForeignKey(ProjectGroup,on_delete=models.CASCADE)
     comment=models.TextField()
+    created_on=models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return str(self.groupid + " " +self.report)
+        return str(self.groupId + " " +self.report)
 
 class PPT(models.Model):   
     ppt=models.FileField(upload_to ='presentations/')
     description=models.TextField(blank=True)
-    groupid=models.ForeignKey(Group,on_delete=models.CASCADE)
+    groupId=models.ForeignKey(ProjectGroup,on_delete=models.CASCADE)
     comment=models.TextField()
+    created_on=models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return str(self.groupid + " " +self.ppt)
+        return str(self.groupId + " " +self.ppt)
 
 

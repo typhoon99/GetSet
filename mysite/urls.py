@@ -19,4 +19,5 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('student.urls')),
+    path('accounts/logout/',views.LogoutView.as_view(next_page='/'),name='logout'),
 ]

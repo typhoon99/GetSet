@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django import forms
-from .forms import SignUpForm
+from .forms import SignUpForm, ProfileForm
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
-from django import UserProfile,Students
+from .models import UserProfile,Students
 
 # Create your views here.
 
-
+def home(request):
+    return render(request, 'student/home.html')
 
 def signup(request):
     if request.method == "POST":     #built-in request.method
@@ -20,7 +21,7 @@ def signup(request):
             raw_password=form.cleaned_data.get('password1')
             user=authenticate(username=username, password=raw_password)
             login(request,user)  #make user login of requested user
-            return redirect('loginUser')
+            return redirect('login')
     else:
         form=SignUpForm()
     return render(request,'student/signup.html', {'form':form})  #for form.as_p in .html 
@@ -39,7 +40,7 @@ def ProfileForm(request):
 
         student = Students.objects.get(rno=userProfile.rollno)
         fields = {'firstName':'match','lastName':'match','mobileNo':'match'}
-        # if(student.rollno==userProfile.rno):
+
         if(student.mobileNo != userProfile.mobileno):
             fields['mobileNo']='unmatch'
         if(student.firstName != userProfile.firstName):
@@ -49,7 +50,7 @@ def ProfileForm(request):
         if(fields['firstName']=='match' and fields['lastName']=='match' and fields['mobileName']=='match'):
             userProfile.save()
         return render(request,'views.')
-    else
+    else:
         return redirect('','')
         
 def Test(request,form):

@@ -20,5 +20,24 @@
             <input type="text" name="bio" placeholder="Enter your information"><br>
             <button type="submit" value="Update Profile"></button>
         </form>
+        <h1>
+            {% if form['firstName']=='match' %}
+            <p>match</p>
+            {% else %}
+            <p>unmatch</p>
+            {% endif %}
+
+            {% if form['lastName']=='match' %}
+            <p>match</p>
+            {% else %}
+            <p>unmatch</p>
+            {% endif %}
+
+            {% if form['mobileNo']=='match' %}
+            <p>match</p>
+            {% else %}
+            <p>unmatch</p>
+            {% endif %}
+        </h1>
     </body>
 </html>

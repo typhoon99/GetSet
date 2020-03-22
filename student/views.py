@@ -6,6 +6,10 @@ from django.http import HttpResponseRedirect
 from .models import UserProfile,Students
 
 # Create your views here.
+
+def home(request):
+    return render(request, 'student/home.html')
+
 def signup(request):
     if request.method == "POST":     #built-in request.method
         form=SignUpForm(request.POST)    #assign values as in constructor
@@ -22,29 +26,46 @@ def signup(request):
         form=SignUpForm()
     return render(request,'student/signup.html', {'form':form})  #for form.as_p in .html 
 
-def ProfileForm(request):
+def createProfile(request):
     if request.method == "POST":
         userProfile=UserProfile()
-        userProfile.rollno=request.POST.get('rollno')
-        userProfile.division=request.POST.get('division')
-        userProfile.firstName=request.POST.get('firstName')
-        userProfile.lastName=request.POST.get('lastName')
-        userProfile.year=request.POST.get('year')
-        userProfile.mobileno=request.POST.get('mobileno')
-        userProfile.cgpa=request.POST.get('cgpa')
-        userProfile.bio=request.POST.get('bio')
+        rollno=request.POST.get('rollno')
+        division=request.POST.get('division')
+        firstName=request.POST.get('firstName')
+        lastName=request.POST.get('lastName')
+        year=request.POST.get('year')
+        mobileno=request.POST.get('mobileno')
+        cgpa=request.POST.get('cgpa')
+        bio=request.POST.get('bio')
 
-        student = Students.objects.get(rno=userProfile.rollno)
+        userProfile.user = request.user
+        userProfile.userProfile=userProfile
+        userProfile.rollno=rollno
+        userProfile.division=division
+        userProfile.firstName=firstName
+        userProfile.lastName=lastName
+        userProfile.year=year
+        userProfile.mobileno=mobileno
+        userProfile.cgpa=cgpa
+        userProfile.bio=bio
+
+        student = Students.objects.get(rno=rollno)
+        print(userProfile.firstName)
         fields = {'firstName':'match','lastName':'match','mobileNo':'match'}
 
-        if(student.mobileNo != userProfile.mobileno):
+        if(str(student.mobileNo) != mobileno):
             fields['mobileNo']='unmatch'
-        if(student.firstName != userProfile.firstName):
+        if(str(student.firstName) != firstName):
             fields['firstName']='unmatch'
-        if(student.lastName != userProfile.lastName):
+        if(str(student.lastName) != lastName):
             fields['lastName']='unmatch'
-        if(fields['firstName']=='match' and fields['lastName']=='match' and fields['mobileName']=='match'):
+        print('matching done')
+        print(fields['firstName'])
+        print(fields['lastName'])
+        print(fields['mobileNo'])
+        if(fields['firstName']=='match' and fields['lastName']=='match' and fields['mobileNo']=='match'):
             userProfile.save()
+            print('saved')
         return render(request,'student/ProfileForm.html',fields)
     else:
         return render(request,'student/ProfileForm.html')

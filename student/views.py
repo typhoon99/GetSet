@@ -6,10 +6,6 @@ from django.http import HttpResponseRedirect
 from .models import UserProfile,Students
 
 # Create your views here.
-
-def home(request):
-    return render(request, 'student/home.html')
-
 def signup(request):
     if request.method == "POST":     #built-in request.method
         form=SignUpForm(request.POST)    #assign values as in constructor
@@ -49,9 +45,9 @@ def ProfileForm(request):
             fields['lastName']='unmatch'
         if(fields['firstName']=='match' and fields['lastName']=='match' and fields['mobileName']=='match'):
             userProfile.save()
-        return render(request,'views.')
+        return render(request,'student/ProfileForm.html',fields)
     else:
-        return redirect('','')
+        return render(request,'student/ProfileForm.html')
         
-def Test(request,form):
-    return render(request,'student/Test.html', {'form':form})
+# def Test(request,form):
+#     return render(request,'student/Test.html', {'form':form})

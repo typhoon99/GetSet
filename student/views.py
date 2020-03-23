@@ -3,15 +3,21 @@ from django import forms
 from .forms import SignUpForm, ProfileForm
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
-from .models import UserProfile,Students
-from django.db import connection
+from .models import UserProfile, Student
+from django.contrib.auth.decorators import login_required
+# from django.db import connection
 
 # Create your views here.
 
 def home(request):
-    return render(request,'student/home.html')
+    if request.POST.get('student'):
+        return redirect('student/signUp')
+    elif request.POST.get('guide'):
+        return redirect('guide/signUp')
+    else:
+        return render(request,'student/home.html')
     
-def signup(request):
+def studentSignUp(request):
     if request.method == "POST":     #built-in request.method
         form=SignUpForm(request.POST)    #assign values as in constructor
         if form.is_valid():
@@ -22,7 +28,23 @@ def signup(request):
             raw_password=form.cleaned_data.get('password1')
             user=authenticate(username=username, password=raw_password)
             login(request,user)  #make user login of requested user
-            return redirect('login')
+            return redirect('createProfile')
+    else:
+        form=SignUpForm()
+    return render(request,'student/signup.html', {'form':form})  #for form.as_p in .html 
+
+def guideSignUp(request):
+    if request.method == "POST":     #built-in request.method
+        form=SignUpForm(request.POST)    #assign values as in constructor
+        if form.is_valid():
+            print('valid')
+            form.save()
+            print('saved')
+            username=form.cleaned_data.get('username')  #cleaned_data removes extraw char added by server.
+            raw_password=form.cleaned_data.get('password1')
+            user=authenticate(username=username, password=raw_password)
+            login(request,user)  #make user login of requested user
+            return redirect('createProfile')
     else:
         form=SignUpForm()
     return render(request,'student/signup.html', {'form':form})  #for form.as_p in .html 
@@ -41,16 +63,16 @@ def createProfile(request):
 
         userProfile.user = request.user
         userProfile.userProfile=userProfile
-        userProfile.rollno=rollno
+        userProfile.rollNo=rollno
         userProfile.division=division
         userProfile.firstName=firstName
         userProfile.lastName=lastName
         userProfile.year=year
-        userProfile.mobileno=mobileno
+        userProfile.mobileNo=mobileno
         userProfile.cgpa=cgpa
         userProfile.bio=bio
 
-        student = Students.objects.get(rno=rollno)
+        student = Student.objects.get(rollNo=rollno)
         print(userProfile.firstName)
         fields = {'firstName':'match','lastName':'match','mobileNo':'match'}
 

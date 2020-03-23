@@ -1,8 +1,9 @@
 <html>
     <body>
         <form method="POST">
-            <button type="button" name="Student" value="Student" class="btn btn-default save">Student</button>
-            <button type="button" name="Guide" value="Guide" class="btn btn-default save">Guide</button>
+            {% csrf_token %}
+            <input type="submit" name="student" value="Student" class="btn btn-default save">Student</button>
+            <input type="submit" name="guide" value="Guide" class="btn btn-default save">Guide</button>
         </form>
     </body>
     

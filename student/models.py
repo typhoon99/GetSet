@@ -11,7 +11,7 @@ class UserProfile(models.Model):
     division=models.CharField(max_length=1)
     rollno=models.IntegerField()
     mobileno=models.IntegerField(primary_key=True)
-    cgpa=models.IntegerField(default=0) 
+    cgpa=models.FloatField(default=0.0) 
     bio=models.CharField(max_length=200,default="NotFilled")
     isTeamLeader=models.BooleanField(default=False)
     post=models.CharField(max_length=10)

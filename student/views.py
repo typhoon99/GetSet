@@ -4,12 +4,13 @@ from .forms import SignUpForm, ProfileForm
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from .models import UserProfile,Students
+from django.db import connection
 
 # Create your views here.
 
 def home(request):
-    return render(request, 'student/home.html')
-
+    return render(request,'student/home.html')
+    
 def signup(request):
     if request.method == "POST":     #built-in request.method
         form=SignUpForm(request.POST)    #assign values as in constructor
@@ -66,9 +67,20 @@ def createProfile(request):
         if(fields['firstName']=='match' and fields['lastName']=='match' and fields['mobileNo']=='match'):
             userProfile.save()
             print('saved')
-        return render(request,'student/ProfileForm.html',fields)
+        return render(request,'student/createGroup.html',fields)
     else:
         return render(request,'student/ProfileForm.html')
-        
+
+def createGroup(request):
+    fields={}
+    userProfile=UserProfile()
+    for firstName in userProfile.firstName:
+        if(userProfile.isGroup==False):
+            fields.append('userProfile.firstName')
+        endif
+    
+    return render(request,'student/createGroup.html',fields)
+
+
 # def Test(request,form):
 #     return render(request,'student/Test.html', {'form':form})

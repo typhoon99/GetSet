@@ -49,31 +49,20 @@ def guideSignUp(request):
         form=SignUpForm()
     return render(request,'student/signup.html', {'form':form})  #for form.as_p in .html 
 
-def createProfile(request):
+@login_required
+def studentCreateProfile(request):
     if request.method == "POST":
-        userProfile=UserProfile()
-        rollno=request.POST.get('rollno')
-        division=request.POST.get('division')
+        rollNo=request.POST.get('rollno')
         firstName=request.POST.get('firstName')
         lastName=request.POST.get('lastName')
         year=request.POST.get('year')
+        division=request.POST.get('division')
         mobileno=request.POST.get('mobileno')
         cgpa=request.POST.get('cgpa')
         bio=request.POST.get('bio')
 
-        userProfile.user = request.user
-        userProfile.userProfile=userProfile
-        userProfile.rollNo=rollno
-        userProfile.division=division
-        userProfile.firstName=firstName
-        userProfile.lastName=lastName
-        userProfile.year=year
-        userProfile.mobileNo=mobileno
-        userProfile.cgpa=cgpa
-        userProfile.bio=bio
-
-        student = Student.objects.get(rollNo=rollno)
-        print(userProfile.firstName)
+        student = Student.objects.get(rollNo=rollNo)
+        print(student.firstName)
         fields = {'firstName':'match','lastName':'match','mobileNo':'match'}
 
         if(str(student.mobileNo) != mobileno):
@@ -87,22 +76,70 @@ def createProfile(request):
         print(fields['lastName'])
         print(fields['mobileNo'])
         if(fields['firstName']=='match' and fields['lastName']=='match' and fields['mobileNo']=='match'):
+            userProfile=UserProfile()
+            userProfile.user = request.user
+            userProfile.rollNo=rollNo
+            userProfile.division=division
+            userProfile.firstName=firstName
+            userProfile.lastName=lastName
+            userProfile.year=year
+            userProfile.mobileNo=mobileno
+            userProfile.cgpa=cgpa
+            userProfile.bio=bio
+            userProfile.post='Student'
+            userProfile.modify()
             userProfile.save()
             print('saved')
-        return render(request,'student/createGroup.html',fields)
+            return render(request,'student/createGroup.html',fields)
+    else:
+        return render(request,'student/ProfileForm.html')
+@login_required
+def guideCreateProfile(request):
+    if request.method == "POST":
+        firstName=request.POST.get('firstName')
+        lastName=request.POST.get('lastName')
+        mobileNo=request.POST.get('mobileno')
+        cgpa=request.POST.get('cgpa')
+        bio=request.POST.get('bio')
+
+        guide = Guide.objects.get(mobileNo=mobileNo)
+        print(userProfile.firstName)
+        fields = {'firstName':'match','lastName':'match','mobileNo':'match'}
+
+        if(str(guide.mobileNo) != mobileno):
+            fields['mobileNo']='unmatch'
+        if(str(guide.firstName) != firstName):
+            fields['firstName']='unmatch'
+        if(str(guide.lastName) != lastName):
+            fields['lastName']='unmatch'
+        print('matching done')
+        print(fields['firstName'])
+        print(fields['lastName'])
+        print(fields['mobileNo'])
+        if(fields['firstName']=='match' and fields['lastName']=='match' and fields['mobileNo']=='match'):
+            userProfile=UserProfile()
+            userProfile.user = request.user
+            userProfile.userProfile=userProfile
+            userProfile.firstName=firstName
+            userProfile.lastName=lastName
+            userProfile.mobileNo=mobileno
+            userProfile.bio=bio
+            userProfile.post='Guide'
+            userProfile.modify()
+            userProfile.save()
+            print('saved')
+            return render(request,'student/createGroup.html',fields)
     else:
         return render(request,'student/ProfileForm.html')
 
-def createGroup(request):
-    fields={}
-    userProfile=UserProfile()
-    for firstName in userProfile.firstName:
-        if(userProfile.isGroup==False):
-            fields.append('userProfile.firstName')
-        endif
-    
-    return render(request,'student/createGroup.html',fields)
-
+# @login_required
+# def createGroup(request):
+#     fields={}
+#     userProfile=UserProfile()
+#     for firstName in userProfile.firstName:
+#         if(userProfile.isGroup==False):
+#             fields.append('userProfile.firstName')
+#     return render(request,'student/createGroup.html',fields)
 
 # def Test(request,form):
 #     return render(request,'student/Test.html', {'form':form})

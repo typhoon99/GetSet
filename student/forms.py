@@ -1,4 +1,4 @@
-from .models import UserProfile, Students, Guide, Topic, ProjectGroup, Report, PPT
+from .models import UserProfile, Student, Guide, Topic, ProjectGroup, Report, PPT
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -14,6 +14,6 @@ class ProfileForm(forms.ModelForm):
         
     class Meta:
         model= UserProfile
-        fields = ['rollno','firstName','lastName','year','division','mobileno','cgpa','bio']
+        fields = ['rollNo','firstName','lastName','year','division','mobileNo','cgpa','bio']
     
     

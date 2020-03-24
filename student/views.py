@@ -61,7 +61,7 @@ def studentCreateProfile(request):
         cgpa=request.POST.get('cgpa')
         bio=request.POST.get('bio')
 
-        student = Student.objects.get(rollNo=rollNo)
+        student = Student.objects.get(rsollNo=rollNo)
         print(student.firstName)
         fields = {'firstName':'match','lastName':'match','mobileNo':'match'}
 
@@ -92,7 +92,7 @@ def studentCreateProfile(request):
             print('saved')
             return render(request,'student/createGroup.html',fields)
     else:
-        return render(request,'student/ProfileForm.html')
+        return render(request,'student/createProfile.html')
 @login_required
 def guideCreateProfile(request):
     if request.method == "POST":
@@ -101,21 +101,6 @@ def guideCreateProfile(request):
         mobileNo=request.POST.get('mobileno')
         cgpa=request.POST.get('cgpa')
         bio=request.POST.get('bio')
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-def createGroup(request):
-    fields={}
-    userProfile=UserProfile()
-    for firstName in userProfile.firstName:
-        if(userProfile.isGroup==False):
-            fields.append('firstName')
-        endif
-    
-    return render(request,'student/createGroup.html',fields)
-=======
-=======
->>>>>>> refs/remotes/origin/development
         guide = Guide.objects.get(mobileNo=mobileNo)
         print(userProfile.firstName)
         fields = {'firstName':'match','lastName':'match','mobileNo':'match'}
@@ -144,11 +129,12 @@ def createGroup(request):
             print('saved')
             return render(request,'student/createGroup.html',fields)
     else:
-        return render(request,'student/ProfileForm.html')
-<<<<<<< HEAD
->>>>>>> 18d7d00631a48d684144babfef5e7c83f6e3153c
-=======
->>>>>>> refs/remotes/origin/development
+        return render(request,'student/createProfile.html')
+
+
+def createGroup(request):
+    students = UserProfile.objects.filter(isGrouped=False).order_by("rollNo")
+    return render(request,'student/createGroup.html',{'students':students})
 
 # @login_required
 # def createGroup(request):

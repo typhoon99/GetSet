@@ -76,7 +76,7 @@ def createGroup(request):
     userProfile=UserProfile()
     for firstName in userProfile.firstName:
         if(userProfile.isGroup==False):
-            fields.append('userProfile.firstName')
+            fields.append('firstName')
         endif
     
     return render(request,'student/createGroup.html',fields)

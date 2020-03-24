@@ -103,6 +103,7 @@ def guideCreateProfile(request):
         bio=request.POST.get('bio')
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def createGroup(request):
     fields={}
     userProfile=UserProfile()
@@ -113,6 +114,8 @@ def createGroup(request):
     
     return render(request,'student/createGroup.html',fields)
 =======
+=======
+>>>>>>> refs/remotes/origin/development
         guide = Guide.objects.get(mobileNo=mobileNo)
         print(userProfile.firstName)
         fields = {'firstName':'match','lastName':'match','mobileNo':'match'}
@@ -142,7 +145,10 @@ def createGroup(request):
             return render(request,'student/createGroup.html',fields)
     else:
         return render(request,'student/ProfileForm.html')
+<<<<<<< HEAD
 >>>>>>> 18d7d00631a48d684144babfef5e7c83f6e3153c
+=======
+>>>>>>> refs/remotes/origin/development
 
 # @login_required
 # def createGroup(request):

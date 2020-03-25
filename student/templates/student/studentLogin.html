@@ -1,0 +1,13 @@
+<html>
+    <body>
+        <h1>Student Login</h1>
+        <form method="POST" action= "{% url 'studentValidate' %}">
+            {% csrf_token %}
+            <label for="userName">UserName:</label>
+            <input type="text" name="userName" value="userName" placeholder="Enter your username"><br>
+            <label for="Password">Password:</label>
+            <input type="password" name="password" value="password" placeholder="Enter your password"><br>
+            <button type="submit" value="Submit">Submit</button>
+        </form>
+    </body>
+    </html>

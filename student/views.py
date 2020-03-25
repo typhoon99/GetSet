@@ -9,13 +9,57 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+def loginUser(request):
+    if request.POST.get('studentLogin'):
+        return redirect('studentLogin')
+    elif request.POST.get('guideLogin'):
+        return redirect('guideLogin')
+    else:
+        return render(request,'student/loginUser.html')
+
+
+def LogoutView(request):
+    return render(request,'home')
+
+def studentLogin(request):
+    return render(request,'student/studentLogin.html')
+
+def guideLogin(request):
+    return render(request,'student/guideLogin.html')
+
+def studentValidate(request):
+    if request.method == "POST":
+        UserName=request.POST.get('userName')
+        Password=request.POST.get('password')
+        user=authenticate(username=UserName,password=Password)
+        if user is not None:
+            return redirect('studentCreateProfile')
+        else:
+            return redirect('studentLogin')
+    else:
+        return render(request,"student/studentLogin.html")
+
+def guideValidate(request):
+    if request.method == "POST":
+        UserName=request.POST.get('userName')
+        Password=request.POST.get('password')
+        user=authenticate(username=UserName,password=Password)
+        if user is not None:
+            return redirect('guideCreateProfile')
+        else:
+            return redirect('guideLogin')
+    else:
+        return render(request,"student/guideLogin.html")
+
 def home(request):
     if request.POST.get('student'):
         return redirect('student/signUp')
     elif request.POST.get('guide'):
         return redirect('guide/signUp')
+    elif request.POST.get('loginUser'):
+        return redirect('loginUser')
     else:
-        return render(request,'student/home.html')
+        return render(request,"student/home.html")
     
 def studentSignUp(request):
     if request.method == "POST":     #built-in request.method
@@ -44,7 +88,7 @@ def guideSignUp(request):
             raw_password=form.cleaned_data.get('password1')
             user=authenticate(username=username, password=raw_password)
             login(request,user)  #make user login of requested user
-            return redirect('createProfile')
+            return redirect('studentCreateProfile')
     else:
         form=SignUpForm()
     return render(request,'student/signup.html', {'form':form})  #for form.as_p in .html 
@@ -61,7 +105,7 @@ def studentCreateProfile(request):
         cgpa=request.POST.get('cgpa')
         bio=request.POST.get('bio')
 
-        student = Student.objects.get(rsollNo=rollNo)
+        student = Student.objects.get(rollNo=rollNo)
         print(student.firstName)
         fields = {'firstName':'match','lastName':'match','mobileNo':'match'}
 
@@ -90,16 +134,15 @@ def studentCreateProfile(request):
             userProfile.modify()
             userProfile.save()
             print('saved')
-            return render(request,'student/createGroup.html',fields)
+            return redirect(request,'student/createGroup.html',fields)
     else:
-        return render(request,'student/createProfile.html')
+        return render(request,'student/studentCreateProfile.html')
 @login_required
 def guideCreateProfile(request):
     if request.method == "POST":
         firstName=request.POST.get('firstName')
         lastName=request.POST.get('lastName')
         mobileNo=request.POST.get('mobileno')
-        cgpa=request.POST.get('cgpa')
         bio=request.POST.get('bio')
         guide = Guide.objects.get(mobileNo=mobileNo)
         print(userProfile.firstName)

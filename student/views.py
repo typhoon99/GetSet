@@ -25,7 +25,7 @@ def studentLogin(request):
     return render(request,'student/studentLogin.html')
 
 def guideLogin(request):
-    return render(request,'student/guideLogin.html')
+    return render(request,'Guide/guideLogin.html')
 
 def studentValidate(request):
     if request.method == "POST":
@@ -91,7 +91,7 @@ def guideSignUp(request):
             return redirect('studentCreateProfile')
     else:
         form=SignUpForm()
-    return render(request,'student/signup.html', {'form':form})  #for form.as_p in .html 
+    return render(request,'guide/guideSignUp.html', {'form':form})  #for form.as_p in .html 
 
 @login_required
 def studentCreateProfile(request):

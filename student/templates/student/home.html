@@ -1,12 +1,119 @@
-<html>
-    <body>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="submit" name="student" value="Student" class="btn btn-default save">Student</button>
-            <input type="submit" name="guide" value="Guide" class="btn btn-default save">Guide</button>
-            <input type="submit" name="loginUser" value="loginUser" class="btn btn-default save">Login</button>
+{% extends 'student/dashboard.html' %}
 
+{% block containt %}
+
+        <div>
+            <center>
+                <h1><span>Continue as &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></h1>
+            </center>
+        </div>
+        <hr>
+
+<form method="POST" action="{% url 'loginUser' %}">
+    {% csrf_token %}
+
+        <div class="content">
+            <div class="row">
+              <div class="col-md-5">
+                <div class="card card-user">
+                    <button type="submit" name="studentLogin" value="Student Login" class="btn btn-default save">
+                  <div class="image">
+                    <img src="static/img/bg/damir-bosnjak.jpg" alt="...">
+                  </div>
+                  <div class="card-body">
+                    <div class="author">
+                      
+                        <img class="avatar border-gray" src="static/img/students.jpg" alt="...">
+                        <h5 class="title">Students</h5>
+                        
+                        <p class="description">
+                        
+                            Continue if You have to login as students.
+                        </p>
+                    </div>
+                  </div>
+                
+                  <div class="card-footer">
+                    <hr>
+                    <div class="button-container">
+                      <div class="row">
+                        <div class="col-lg-3 col-md-6 col-6 ml-auto">
+                          <h5>
+                            <br>
+                            <small></small>
+                          </h5>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
+                          <h5>
+                            <br>
+                            <small></small>
+                          </h5>
+                        </div>
+                        <div class="col-lg-3 mr-auto">
+                          <h5>
+                            <br>
+                            <small></small>
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </button>
+
+
+
+              <div class="col-md-5">
+                <div class="card card-user">
+                    <button type="submit" name="guideLogin" value="Guide Login" class="btn btn-default save">
+                  <div class="image">
+                    <img src="static/img/bg/damir-bosnjak.jpg" alt="...">
+                  </div>
+                  <div class="card-body">
+                    <div class="author">
+                      
+                        <img class="avatar border-gray" src="static/img/guide.jpg" alt="...">
+                        <h5 class="title">Guide</h5>
+                        
+                        <p class="description">
+                        
+                            Continue if You have to login as Guide.
+                        </p>
+                    </div>
+                  </div>
+                
+
+                  <div class="card-footer">
+                    <hr>
+                    <div class="button-container">
+                      <div class="row">
+                        <div class="col-lg-3 col-md-6 col-6 ml-auto">
+                          <h5>
+                            <br>
+                            <small></small>
+                          </h5>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
+                          <h5>
+                            <br>
+                            <small></small>
+                          </h5>
+                        </div>
+                        <div class="col-lg-3 mr-auto">
+                          <h5>
+                            <br>
+                            <small></small>
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    </button>
+                </div>
+              </div>
+          </div>
+          </div>
         </form>
-    </body>
     
-</html>
+{% endblock %}

@@ -1,12 +1,62 @@
-<html>
-    <body>
-        {% for student in students %}
 
-                 <p>Name: {{ student.firstName }} 
-                     {{ student.lastName }}
-                    Roll no: {{ student.rollNo }}</p>
 
-        {% endfor %}
-    
-</body>
-</html>
+{% extends 'student/dashboard.html' %}
+
+{% block containt %}
+
+<form method="POST">
+    {% csrf_token %}
+<div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Create Group</h4>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead class="text-primary">
+              <th class="text-center">
+                Roll Number
+              </th>
+              <th class="text-center">
+              </th>
+              <th>
+                Name
+              </th>
+            </thead>
+            <tbody>
+                {% for student in students %}
+              <tr>
+                <td class="text-center">
+                    {{ student.rollNo }}
+                </td>
+                    
+                <td class="text-center">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" >
+                      <span class="form-check-sign"></span>
+                    </label>
+                  </div>
+                </td>
+
+                <td>
+                    {{ student.firstName }} 
+                    {{ student.lastName }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <center>
+          <button type="submit" name="createGroup" value="Create Group" class="btn btn-primary">Create Group
+          </button>
+        </center>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

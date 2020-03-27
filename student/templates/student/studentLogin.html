@@ -1,13 +1,65 @@
-<html>
-    <body>
-        <h1>Student Login</h1>
-        <form method="POST" action= "{% url 'studentValidate' %}">
+
+{% extends 'student/base.html' %}
+
+{% block containt %}
+<br>
+<center>
+<div class="col-md-6">
+    <div class="card ">
+      <div class="card-header ">
+        <h2 class="card-title">Student Login</h2>
+      </div>
+      
+      <hr>
+      <div class="card-body ">
+        <form class="form-horizontal" method="POST" action= "{% url 'studentValidate' %}">
             {% csrf_token %}
-            <label for="userName">UserName:</label>
-            <input type="text" name="userName" value="userName" placeholder="Enter your username"><br>
-            <label for="Password">Password:</label>
-            <input type="password" name="password" value="password" placeholder="Enter your password"><br>
-            <button type="submit" value="Submit">Submit</button>
-        </form>
-    </body>
-    </html>
+            <div class="row">
+            <label class="col-md-3 col-form-label" for="userName" >Username</label>
+            <div class="col-md-9">
+              <div class="form-group">
+                <input type="text" class="form-control" name="userName" value="userName" placeholder="Enter your username">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <label class="col-md-3 col-form-label" for="Password">Password</label>
+            <div class="col-md-9">
+              <div class="form-group">
+                <input type="password" class="form-control" name="password" value="password" placeholder="Enter your password">
+              </div>
+            </div>
+          </div>
+        
+      </div>
+      <div class="card-footer ">
+        <div class="row">
+          <label class="col-md-3"></label>
+          <div class="col-md-9">
+            <button type="submit" class="btn btn-info btn-round" value="Submit">Sign in</button>
+          </div>
+        </div>
+        <div class="card-footer">
+          <hr>
+          <div class="button-container">
+            <div class="row">
+              <div class=" col-md-8 ">
+                <h5>
+                  <br>
+                  <small>Not user yet? Ok</small> <a href="{% url 'studentSignUp' %}">SignUp now!</a>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+      <br>
+      <br>
+    </div>
+  </div>
+</center>
+
+
+{% endblock %}

@@ -3,7 +3,7 @@ from django import forms
 from .forms import SignUpForm, ProfileForm
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
-from .models import UserProfile, Student
+from .models import UserProfile, Student, User, ProjectGroup
 from django.contrib.auth.decorators import login_required
 # from django.db import connection
 
@@ -37,7 +37,7 @@ def studentValidate(request):
         else:
             return redirect('studentLogin')
     else:
-        return render(request,"student/studentLogin.html")
+        return render(request,"student/guideLogin.html")
 
 def guideValidate(request):
     if request.method == "POST":
@@ -49,7 +49,7 @@ def guideValidate(request):
         else:
             return redirect('guideLogin')
     else:
-        return render(request,"student/guideLogin.html")
+        return render(request,"guide/guideLogin.html")
 
 def home(request):
     if request.POST.get('student'):
@@ -72,7 +72,7 @@ def studentSignUp(request):
             raw_password=form.cleaned_data.get('password1')
             user=authenticate(username=username, password=raw_password)
             login(request,user)  #make user login of requested user
-            return redirect('createProfile')
+            return redirect('studentCreateProfile')
     else:
         form=SignUpForm()
     return render(request,'student/signup.html', {'form':form})  #for form.as_p in .html 
@@ -88,7 +88,7 @@ def guideSignUp(request):
             raw_password=form.cleaned_data.get('password1')
             user=authenticate(username=username, password=raw_password)
             login(request,user)  #make user login of requested user
-            return redirect('studentCreateProfile')
+            return redirect('guideCreateProfile')
     else:
         form=SignUpForm()
     return render(request,'guide/guideSignUp.html', {'form':form})  #for form.as_p in .html 
@@ -96,7 +96,7 @@ def guideSignUp(request):
 @login_required
 def studentCreateProfile(request):
     if request.method == "POST":
-        rollNo=request.POST.get('rollno')
+        rollno=request.POST.get('rollno')
         firstName=request.POST.get('firstName')
         lastName=request.POST.get('lastName')
         year=request.POST.get('year')
@@ -105,7 +105,7 @@ def studentCreateProfile(request):
         cgpa=request.POST.get('cgpa')
         bio=request.POST.get('bio')
 
-        student = Student.objects.get(rollNo=rollNo)
+        student = Student.objects.get(rollNo=rollno)
         print(student.firstName)
         fields = {'firstName':'match','lastName':'match','mobileNo':'match'}
 
@@ -122,7 +122,7 @@ def studentCreateProfile(request):
         if(fields['firstName']=='match' and fields['lastName']=='match' and fields['mobileNo']=='match'):
             userProfile=UserProfile()
             userProfile.user = request.user
-            userProfile.rollNo=rollNo
+            userProfile.rollNo=rollno
             userProfile.division=division
             userProfile.firstName=firstName
             userProfile.lastName=lastName
@@ -134,9 +134,13 @@ def studentCreateProfile(request):
             userProfile.modify()
             userProfile.save()
             print('saved')
-            return redirect(request,'student/createGroup.html',fields)
+            return redirect('createGroup')
+        else:
+            return redirect('createGroup')
+
     else:
         return render(request,'student/studentCreateProfile.html')
+
 @login_required
 def guideCreateProfile(request):
     if request.method == "POST":
@@ -178,6 +182,26 @@ def guideCreateProfile(request):
 def createGroup(request):
     students = UserProfile.objects.filter(isGrouped=False).order_by("rollNo")
     return render(request,'student/createGroup.html',{'students':students})
+
+def registerGroup(request):
+    if request.method == "POST":
+        selected = request.POST.getlist('checks[]')
+        userProfile=UserProfile()
+        projectGroup=ProjectGroup()
+        student1 = userProfile.objects.get(rollNo=int(selected[0]))
+        projectGroup.user1=student1.user
+        student2 = userProfile.objects.get(rollNo=int(selected[1]))
+        projectGroup.user2=student2.user
+        student3 = userProfile.objects.get(rollNo=int(selected[2]))
+        projectGroup.user3=student3.user
+        student4 = userProfile.objects.get(rollNo=int(selected[3]))
+        projectGroup.user4=student4.user
+        projectGroup.modify()
+        projectGroup.save()
+        return redirect("yourTopic")
+    else:
+        return render(request,'student/yourTopic.html')
+
 
 # @login_required
 # def createGroup(request):

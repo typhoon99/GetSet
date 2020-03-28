@@ -14,4 +14,5 @@ urlpatterns = [
 	path('guideValidate/', views.guideValidate, name="guideValidate"),
 	path('studentCreateProfile/', views.studentCreateProfile, name="studentCreateProfile"),
 	path('guideCreateProfile/', views.guideCreateProfile, name="guideCreateProfile"),
+	path('registerGroup/', views.registerGroup, name="registerGroup"),
 ]

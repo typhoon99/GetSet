@@ -4,7 +4,30 @@
 
 {% block containt %}
 
-<form method="POST" action= "{% url 'registerGroup' %}">
+<!--<script type="text/javascript">
+    $(function () {
+        $("#btnGet").click(function () {
+            //Create an Array.
+            var selected = new Array();
+ 
+            //Reference the CheckBoxes and insert the checked CheckBox value in Array.
+            $("#tbl input[type=checkbox]:checked").each(function () {
+                selected.push(this.value);
+            });
+ 
+            //Display the selected CheckBox values.
+            if (selected.length > 0) {
+              document.getElementById("TheBody").innerHTML = selected.join(",");
+            }
+        });
+    })
+    /*var form = document.getElementById('tbl');
+form.elements.province.onchange = function () {
+    var form = this.form;
+    form.elements.showtax.value = taxCodes[this.value];
+};*/
+</script>-->
+<form method="POST" id="tbl" action= "{% url 'registerGroup' %}">
     {% csrf_token %}
 <div class="col-md-12">
     <div class="card">
@@ -14,7 +37,7 @@
 
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table table-striped" id="tbl"> 
             <thead class="text-primary">
               <th class="text-center">
                 Roll Number
@@ -36,7 +59,7 @@
                 <td class="text-center">
                   <div class="form-check">
                     <label class="form-check-label">
-                      <input class="form-check-input" type="checkbox" name="checks" value="{{ student.rollNo }}" >
+                      <input class="form-check-input" type="checkbox" name="checks[]" value="{{ student.rollNo }}" >
                       <span class="form-check-sign"></span>
                     </label>
                   </div>

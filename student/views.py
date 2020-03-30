@@ -33,11 +33,16 @@ def studentValidate(request):
         Password=request.POST.get('password')
         user=authenticate(username=UserName,password=Password)
         if user is not None:
+            student= UserProfile.objects.get(user='UserName')
+            if not student:
+                return redirect('studentCreateProfile')
+            else:
+                return redirect('createGroup')
             return redirect('studentCreateProfile')
         else:
             return redirect('studentLogin')
     else:
-        return render(request,"student/guideLogin.html")
+        return render(request,"student/studentLogin.html")
 
 def guideValidate(request):
     if request.method == "POST":
@@ -185,18 +190,26 @@ def createGroup(request):
 
 def registerGroup(request):
     if request.method == "POST":
-        selected = request.POST.getlist('checks[]')
-        userProfile=UserProfile()
+        selected = request.POST.getlist("checks[]")
+        #for i in selected:
+        #list = str.split (",")
+        #print ("list: ", list)
+        #print(selected[0])
+        #print(selected[1])
+        #print(selected[0])
+        #print(request.POST)
+        #userProfile=UserProfile()
         projectGroup=ProjectGroup()
-        student1 = userProfile.objects.get(rollNo=int(selected[0]))
-        projectGroup.user1=student1.user
-        student2 = userProfile.objects.get(rollNo=int(selected[1]))
-        projectGroup.user2=student2.user
-        student3 = userProfile.objects.get(rollNo=int(selected[2]))
-        projectGroup.user3=student3.user
-        student4 = userProfile.objects.get(rollNo=int(selected[3]))
-        projectGroup.user4=student4.user
-        projectGroup.modify()
+        userProfile=UserProfile()
+        student1 = UserProfile.objects.get(rollNo=int(selected[0]))
+        projectGroup.user1=student1
+        student2 = UserProfile.objects.get(rollNo=int(selected[1]))
+        projectGroup.user2=student2
+        student3 = UserProfile.objects.get(rollNo=int(selected[2]))
+        projectGroup.user3=student3
+        student4 = UserProfile.objects.get(rollNo=int(selected[3]))
+        projectGroup.user4=student4
+        #projectGroup.modify()
         projectGroup.save()
         return redirect("yourTopic")
     else:

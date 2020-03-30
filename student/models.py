@@ -68,7 +68,7 @@ class Topic(models.Model):
     domain = models.CharField(max_length = 30)
     description = models.TextField()
     document = models.FileField(upload_to = 'topics')
-    createdOn = models.DateTimeField(auto_now_add = True)
+    createdOn = models.DateTimeField(default=timezone.now)
     isTaken = models.BooleanField(default = False)
    
     def __str__(self):
@@ -84,12 +84,12 @@ class ProjectGroup(models.Model):
     user2 = models.ForeignKey(UserProfile, on_delete = models.CASCADE, related_name = "member2")
     user3 = models.ForeignKey(UserProfile, on_delete = models.CASCADE, related_name = "member3")
     user4 = models.ForeignKey(UserProfile, on_delete = models.CASCADE, related_name = "member4")
-    guide = models.ForeignKey(UserProfile, on_delete = models.CASCADE)
+    guide = models.ForeignKey(UserProfile, on_delete = models.CASCADE, blank= True, null= True)
     topic = models.ForeignKey(Topic, on_delete = models.CASCADE, blank = True, null = True)
     createdOn = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.groupId
+        return self.user2
 
 class Report(models.Model):
     report = models.FileField(upload_to = 'reports')

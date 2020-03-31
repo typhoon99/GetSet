@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
 from .forms import SignUpForm, ProfileForm
 from django.contrib.auth import login, authenticate
@@ -21,24 +21,28 @@ def loginUser(request):
 def LogoutView(request):
     return render(request,'home')
 
-def studentLogin(request):
-    return render(request,'student/studentLogin.html')
+def studentLogin(request,pk):
+    user = get_object_or_404(User, pk=pk)
+    return render(request, 'student/studentLogin.html',{'user':user})
 
 def guideLogin(request):
     return render(request,'Guide/guideLogin.html')
 
-def studentValidate(request):
+def studentValidate(request,pk):
     if request.method == "POST":
         UserName=request.POST.get('userName')
         Password=request.POST.get('password')
         user=authenticate(username=UserName,password=Password)
+        student= User.objects.get(username=UserName).pk
+        User1=get_object_or_404(UserProfile,pk=student)
+        #print(User1)
+        #print(student)
         if user is not None:
-            student= UserProfile.objects.get(user='UserName')
-            if not student:
-                return redirect('studentCreateProfile')
+            #student= UserProfile.objects.get(user=UserName)
+            if User1:
+               return redirect('createGroup')
             else:
-                return redirect('createGroup')
-            return redirect('studentCreateProfile')
+                return redirect('studentCreateProfile')
         else:
             return redirect('studentLogin')
     else:
@@ -61,8 +65,8 @@ def home(request):
         return redirect('student/signUp')
     elif request.POST.get('guide'):
         return redirect('guide/signUp')
-    elif request.POST.get('loginUser'):
-        return redirect('loginUser')
+    #elif request.POST.get('loginUser'):
+    #    return redirect('loginUser')
     else:
         return render(request,"student/home.html")
     
